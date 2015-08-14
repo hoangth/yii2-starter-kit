@@ -33,11 +33,26 @@ class AppController extends Controller
 
     public function actionSetup()
     {
+        $this->runAction('set-writable', ['interactive' => $this->interactive]);
+        $this->runAction('set-executable', ['interactive' => $this->interactive]);
+        $this->runAction('set-keys', ['interactive' => $this->interactive]);
+        \Yii::$app->runAction('migrate/up', ['interactive' => $this->interactive]);
+        \Yii::$app->runAction('rbac-migrate/up', ['interactive' => $this->interactive]);
+    }
+
+    public function actionSetWritable()
+    {
         $this->setWritable($this->writablePaths);
+    }
+
+    public function actionSetExecutable()
+    {
         $this->setExecutable($this->executablePaths);
-        $this->setGeneratedKey($this->generateKeysPaths);
-        \Yii::$app->runAction('migrate/up');
-        \Yii::$app->runAction('rbac-migrate/up');
+    }
+
+    public function actionSetKeys()
+    {
+        $this->setKeys($this->generateKeysPaths);
     }
 
     public function setWritable($paths)
@@ -58,7 +73,7 @@ class AppController extends Controller
         }
     }
 
-    public function setGeneratedKey($paths)
+    public function setKeys($paths)
     {
         foreach ($paths as $file) {
             $file = Yii::getAlias($file);

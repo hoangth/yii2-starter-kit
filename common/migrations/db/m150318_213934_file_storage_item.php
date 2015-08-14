@@ -11,16 +11,17 @@ class m150318_213934_file_storage_item extends Migration
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
+
         $this->createTable('{{%file_storage_item}}', [
-            'id' => Schema::TYPE_PK,
-            'component' => Schema::TYPE_STRING . '(255) NOT NULL',
-            'base_url' => Schema::TYPE_STRING . '(512) NOT NULL',
-            'path' => Schema::TYPE_STRING . '(512) NOT NULL',
-            'type' => Schema::TYPE_STRING . '(128)',
-            'size' => Schema::TYPE_INTEGER,
-            'name' => Schema::TYPE_STRING . '(255)',
-            'upload_ip' => Schema::TYPE_STRING . '(15)',
-            'created_at' => Schema::TYPE_INTEGER . ' NOT NULL'
+            'id' => $this->primaryKey(),
+            'component' => $this->string()->notNull(),
+            'base_url' => $this->string(1024)->notNull(),
+            'path' => $this->string(1024)->notNull(),
+            'type' => $this->string(),
+            'size' => $this->integer(),
+            'name' => $this->string(),
+            'upload_ip' => $this->string(15),
+            'created_at' => $this->integer()->notNull()
         ], $tableOptions);
     }
     public function down()

@@ -3,6 +3,8 @@ Yii Starter Kit Change Log
 
 2.1.0 under development
 -----------------------
+- Enh: Assets compression support
+- Enh #192: Docker support
 - Enh #223: Migrations for RBAC
 - Enh #189: Added command bus
 - Changed application setup proccess 

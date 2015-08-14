@@ -17,7 +17,8 @@ $config = [
         ],
 
         'cache' => [
-            'class' => 'yii\caching\DummyCache',
+            'class' => 'yii\caching\FileCache',
+            'cachePath' => '@common/runtime/cache'
         ],
 
         'commandBus' => [
@@ -92,7 +93,8 @@ $config = [
                         'common'=>'common.php',
                         'backend'=>'backend.php',
                         'frontend'=>'frontend.php',
-                    ]
+                    ],
+                    'on missingTranslation' => ['\backend\modules\i18n\Module', 'missingTranslation']
                 ],
                 /* Uncomment this code to use DbMessageSource
                  '*'=> [
@@ -100,10 +102,10 @@ $config = [
                     'sourceMessageTable'=>'{{%i18n_source_message}}',
                     'messageTable'=>'{{%i18n_message}}',
                     'enableCaching' => YII_ENV_DEV,
-                    'cachingDuration' => 3600
+                    'cachingDuration' => 3600,
+                    'on missingTranslation' => ['\backend\modules\i18n\Module', 'missingTranslation']
                 ],
                 */
-
             ],
         ],
 
@@ -132,7 +134,7 @@ $config = [
         ),
         'urlManagerFrontend' => \yii\helpers\ArrayHelper::merge(
             [
-                'hostInfo'=>Yii::getAlias('@frontendUrl')
+                'hostInfo' => Yii::getAlias('@frontendUrl')
             ],
             require(Yii::getAlias('@frontend/config/_urlManager.php'))
         ),
@@ -156,11 +158,6 @@ $config = [
 ];
 
 if (YII_ENV_PROD) {
-    $config['components']['cache'] = [
-        'class' => 'yii\caching\FileCache',
-        'cachePath' => '@common/runtime/cache'
-    ];
-
     $config['components']['log']['targets']['email'] = [
         'class' => 'yii\log\EmailTarget',
         'except' => ['yii\web\HttpException:*'],
@@ -173,6 +170,10 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class'=>'yii\gii\Module'
+    ];
+
+    $config['components']['cache'] = [
+        'class' => 'yii\caching\DummyCache'
     ];
 }
 
